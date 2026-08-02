@@ -1,0 +1,329 @@
+[data-nameless-widget] .amolia-widget {
+  --amolia-ink: #202020;
+  --amolia-muted: #676767;
+  --amolia-line: #d0d0d0;
+  --amolia-green: #338d39;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 44rem;
+  margin-bottom: 20px;
+  color: var(--amolia-ink);
+  background: 0 0;
+  font-family: inherit
+}
+
+[data-nameless-widget] .amolia-widget *,
+[data-nameless-widget] .amolia-widget ::after,
+[data-nameless-widget] .amolia-widget ::before {
+  box-sizing: border-box
+}
+
+[data-nameless-widget] .amolia-widget__header {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px
+}
+
+[data-nameless-widget] .amolia-widget__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px
+}
+
+[data-nameless-widget] .amolia-widget__title {
+  margin: 0;
+  color: var(--amolia-ink);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.2
+}
+
+[data-nameless-widget] .amolia-widget__discount {
+  display: inline-flex;
+  align-items: center;
+  min-height: 29px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--amolia-green);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1
+}
+
+[data-nameless-widget] .amolia-widget__subtitle {
+  margin: 0;
+  color: var(--amolia-muted);
+  font-size: 16px;
+  line-height: 1.35
+}
+
+[data-nameless-widget] .amolia-widget__addon-list {
+  display: grid;
+  gap: 16px
+}
+
+[data-nameless-widget] .amolia-addon {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 0;
+  min-height: 106px;
+  padding: 16px;
+  border: 1px solid var(--amolia-line);
+  border-radius: 20px;
+  background: #fff;
+  transition: border-color 150ms ease, background-color 150ms ease
+}
+
+[data-nameless-widget] .amolia-addon__row {
+  display: grid;
+  grid-template-columns: 27px 72px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px
+}
+
+[data-nameless-widget] .amolia-addon.is-selected {
+  border-color: #191919;
+  background: #fff
+}
+
+[data-nameless-widget] .amolia-addon:hover {
+  border-color: #191919
+}
+
+[data-nameless-widget] .amolia-addon.is-sold-out {
+  opacity: .55
+}
+
+[data-nameless-widget] .amolia-addon__select {
+  display: grid;
+  cursor: pointer
+}
+
+[data-nameless-widget] .amolia-addon__select::before {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: ""
+}
+
+[data-nameless-widget] .amolia-addon__checkbox {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap
+}
+
+[data-nameless-widget] .amolia-addon__control {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border: 2px solid #c9c9c9;
+  border-radius: 999px;
+  background: #fff
+}
+
+[data-nameless-widget] .amolia-addon__checkbox:checked+.amolia-addon__control {
+  border-color: #191919;
+  background: #191919
+}
+
+[data-nameless-widget] .amolia-addon__checkbox:checked+.amolia-addon__control::after {
+  width: 11px;
+  height: 6px;
+  border-bottom: 2px solid #fff;
+  border-left: 2px solid #fff;
+  content: "";
+  transform: rotate(-45deg) translateY(-1px)
+}
+
+[data-nameless-widget] .amolia-addon__checkbox:focus-visible+.amolia-addon__control,
+[data-nameless-widget] .amolia-addon__variant:focus-visible,
+[data-nameless-widget] .amolia-widget__atc:focus-visible {
+  outline: 2px solid var(--amolia-green);
+  outline-offset: 3px
+}
+
+[data-nameless-widget] .amolia-addon__media {
+  width: 72px;
+  height: 72px;
+  overflow: hidden;
+  border: 1px solid #e1ddd3;
+  border-radius: 12px;
+  background: #f7f3e9
+}
+
+[data-nameless-widget] .amolia-addon__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover
+}
+
+[data-nameless-widget] .amolia-addon__image-placeholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: var(--amolia-muted);
+  font-size: 28px;
+  font-weight: 300
+}
+
+[data-nameless-widget] .amolia-addon__content {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  min-height: 72px;
+  min-width: 0
+}
+
+[data-nameless-widget] .amolia-addon__outgoing-link {
+  position: relative;
+  z-index: 2;
+  color: inherit;
+  text-decoration: none
+}
+
+[data-nameless-widget] .amolia-addon__outgoing-icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  vertical-align: -2px
+}
+
+[data-nameless-widget] .amolia-addon__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px
+}
+
+[data-nameless-widget] .amolia-addon__title {
+  margin: 0;
+  color: var(--amolia-ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25
+}
+
+[data-nameless-widget] .amolia-addon__sold-out {
+  display: inline-flex;
+  padding: 3px 8px;
+  border-radius: 999px;
+  color: #8d2929;
+  background: #fdeaea;
+  font-size: 14px;
+  font-weight: 700
+}
+
+[data-nameless-widget] .amolia-addon__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 11px;
+  color: var(--amolia-muted);
+  font-size: 14px;
+  line-height: 1.25;
+  margin-top: auto
+}
+
+[data-nameless-widget] .amolia-addon__variant-label {
+  position: relative;
+  z-index: 2;
+  display: none;
+  width: 100%;
+  margin-top: 12px
+}
+
+[data-nameless-widget] .amolia-addon.is-selected .amolia-addon__variant-label {
+  display: block
+}
+
+[data-nameless-widget] .amolia-addon__price-now {
+  font-weight: 500
+}
+
+[data-nameless-widget] .amolia-addon__price-was {
+  color: #777
+}
+
+[data-nameless-widget] .amolia-addon__variant {
+  width: 100%;
+  max-width: none;
+  min-height: 36px;
+  padding: 6px 28px 6px 9px;
+  border: 1px solid #c9c9c9;
+  border-radius: 5px;
+  color: var(--amolia-ink);
+  background: #fff;
+  font: inherit;
+  font-size: 14px
+}
+
+[data-nameless-widget] .amolia-addon__quantity,
+[data-nameless-widget] .amolia-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap
+}
+
+[data-nameless-widget] .amolia-widget__empty {
+  margin: 0;
+  color: var(--amolia-muted);
+  font-size: 15px
+}
+
+[data-nameless-widget] .amolia-widget__atc {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 22px;
+  padding: 12px 20px;
+  border: 1px solid #224d2d;
+  border-radius: 5px;
+  color: #fff;
+  background: #224d2d;
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700
+}
+
+[data-nameless-widget] .amolia-widget__atc:hover:not(:disabled) {
+  border-color: #173b20;
+  background: #173b20
+}
+
+[data-nameless-widget] .amolia-widget__atc:disabled {
+  cursor: not-allowed;
+  opacity: .55
+}
+
+@media (max-width:520px) {
+  [data-nameless-widget] .amolia-addon {
+    border-radius: 16px
+  }
+
+  [data-nameless-widget] .amolia-addon__control {
+    width: 20px;
+    height: 20px
+  }
+
+  [data-nameless-widget] .amolia-addon__media {
+    width: 72px;
+    height: 72px;
+    border-radius: 9px
+  }
+}
