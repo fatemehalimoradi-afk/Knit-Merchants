@@ -6,10 +6,12 @@
 | --- | --- |
 | Shop | amolia-9448.myshopify.com |
 | Shop Status | Active |
-| Migration | FastBundle → Knit Bundles |
+| Migration | FastBundle (17 July Incident ) → Knit Bundles |
 | Source | Post-incident migration from FastBundle |
 | Total Bundles | 5 |
 | Bundle Status | Active (currently hidden) |
+| HubSpot | [Amolia - Knit Bundles](https://app.hubspot.com/contacts/48402902/record/0-3/63053412161) |
+| Unmet feature | in progress — bundles active but hidden / unresolved storefront issue |
 
 ## Customer Background
 

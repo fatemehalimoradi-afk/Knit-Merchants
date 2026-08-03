@@ -1,0 +1,264 @@
+[data-nameless-widget] {
+  container-type: inline-size;
+  margin: 0 0 20px
+}
+
+[data-nameless-widget] .bxgy-widget {
+  --bxgy-ink: #0a0a0a;
+  --bxgy-muted: #5a5a5a;
+  --bxgy-compare: #a8a8a8;
+  --bxgy-card: #f7f7f7;
+  --bxgy-select-border: #b5b5b5;
+  --bxgy-select-border-hover: #8f8f8f;
+  --bxgy-select-bg: #ffffff;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 560px;
+  margin: 0;
+  color: var(--bxgy-ink);
+  font-family: inherit
+}
+
+[data-nameless-widget] .bxgy-widget *,
+[data-nameless-widget] .bxgy-widget ::after,
+[data-nameless-widget] .bxgy-widget ::before {
+  box-sizing: border-box
+}
+
+[data-nameless-widget] .bxgy-title {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .2px;
+  color: var(--bxgy-ink);
+  margin: 0 0 12px
+}
+
+[data-nameless-widget] .bxgy-list {
+  display: grid;
+  gap: 12px
+}
+
+[data-nameless-widget] .bxgy-row {
+  display: grid;
+  grid-template-columns: auto 56px minmax(0, 1fr);
+  column-gap: 14px;
+  row-gap: 14px;
+  align-items: start;
+  padding: 16px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--bxgy-card);
+  box-shadow: none
+}
+
+[data-nameless-widget] .bxgy-row.is-sold-out {
+  opacity: .55
+}
+
+[data-nameless-widget] .bxgy-row__toggle {
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  align-self: center;
+  cursor: pointer
+}
+
+[data-nameless-widget] .bxgy-checkbox {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap
+}
+
+[data-nameless-widget] .bxgy-checkbox__box {
+  inline-size: 20px;
+  block-size: 20px;
+  border: 1.5px solid #cfcfcf;
+  border-radius: 999px;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  transition: background .15s ease-in-out, border-color .15s ease-in-out
+}
+
+[data-nameless-widget] .bxgy-checkbox__box::after {
+  content: "";
+  inline-size: 6px;
+  block-size: 10px;
+  border-right: 1.5px solid transparent;
+  border-bottom: 1.5px solid transparent;
+  transform: rotate(45deg) translate(-1px, -1.5px)
+}
+
+[data-nameless-widget] .bxgy-checkbox:checked+.bxgy-checkbox__box {
+  border-color: var(--bxgy-ink);
+  background: var(--bxgy-ink)
+}
+
+[data-nameless-widget] .bxgy-checkbox:checked+.bxgy-checkbox__box::after {
+  border-color: #fff
+}
+
+[data-nameless-widget] .bxgy-checkbox:focus-visible+.bxgy-checkbox__box {
+  border-color: var(--bxgy-ink)
+}
+
+[data-nameless-widget] .bxgy-checkbox:disabled+.bxgy-checkbox__box {
+  opacity: .4;
+  cursor: not-allowed
+}
+
+[data-nameless-widget] .bxgy-qty {
+  display: none !important
+}
+
+[data-nameless-widget] .bxgy-row__media {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  inline-size: 56px;
+  block-size: 56px;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  display: grid;
+  place-items: center
+}
+
+[data-nameless-widget] .bxgy-row__image {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block
+}
+
+[data-nameless-widget] .bxgy-row__mark {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--bxgy-muted)
+}
+
+[data-nameless-widget] .bxgy-row__body {
+  grid-column: 3;
+  grid-row: 1;
+  align-self: center;
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  align-content: center
+}
+
+[data-nameless-widget] .bxgy-row__topline {
+  min-width: 0
+}
+
+[data-nameless-widget] .bxgy-row__title {
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 700;
+  color: var(--bxgy-ink)
+}
+
+[data-nameless-widget] .bxgy-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.4
+}
+
+[data-nameless-widget] .bxgy-price__final {
+  color: var(--bxgy-ink);
+  font-weight: 600
+}
+
+[data-nameless-widget] .bxgy-price__compare {
+  color: var(--bxgy-compare);
+  font-weight: 400;
+  text-decoration: line-through
+}
+
+[data-nameless-widget] .bxgy-row.is-selected .bxgy-price,
+[data-nameless-widget] .bxgy-row.is-sold-out .bxgy-price {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important
+}
+
+[data-nameless-widget] .bxgy-row.is-selected .bxgy-price__final,
+[data-nameless-widget] .bxgy-row.is-sold-out .bxgy-price__final {
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important
+}
+
+[data-nameless-widget] .bxgy-row.is-selected .bxgy-price__compare,
+[data-nameless-widget] .bxgy-row.is-sold-out .bxgy-price__compare {
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  text-decoration: line-through !important
+}
+
+[data-nameless-widget] .bxgy-row__badge {
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--bxgy-muted)
+}
+
+[data-nameless-widget] .bxgy-row__variant {
+  grid-column: 2/-1;
+  margin-top: 2px
+}
+
+[data-nameless-widget] .bxgy-select {
+  inline-size: 100%;
+  min-block-size: 44px;
+  border: 4px solid var(--bxgy-select-border);
+  border-radius: 10px;
+  background: var(--bxgy-select-bg);
+  color: var(--bxgy-ink);
+  padding: 8px 34px 8px 14px;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.3;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%235a5a5a' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+  transition: border-color .15s ease-in-out
+}
+
+[data-nameless-widget] .bxgy-select:hover {
+  border-color: var(--bxgy-select-border-hover)
+}
+
+[data-nameless-widget] .bxgy-select:focus {
+  outline: 0;
+  border-color: var(--bxgy-ink)
+}
+
+@media (max-width:640px) {
+  [data-nameless-widget] .bxgy-row {
+    grid-template-columns: auto 52px minmax(0, 1fr);
+    column-gap: 12px;
+    padding: 14px
+  }
+
+  [data-nameless-widget] .bxgy-row__media {
+    inline-size: 52px;
+    block-size: 52px
+  }
+
+  [data-nameless-widget] .bxgy-row__title {
+    font-size: 13px
+  }
+}

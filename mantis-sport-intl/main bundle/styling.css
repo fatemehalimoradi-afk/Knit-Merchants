@@ -1,0 +1,408 @@
+[data-nameless-widget] {
+  container-type: inline-size;
+  margin: 0 0 24px
+}
+
+.nameless-auto-inject[data-nameless-widget] {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  margin-right: auto;
+  margin-left: 0
+}
+
+[data-nameless-widget] .rw-widget {
+  --rw-ink: #191919;
+  --rw-muted: rgba(25, 25, 25, 0.5);
+  --rw-line: rgba(203, 203, 203, 0.2);
+  --rw-divider: rgba(255, 65, 213, 0.2);
+  --rw-field: #fafafa;
+  --rw-field-border: #ebebeb;
+  --rw-label: #262626;
+  --rw-accent: #ff41d5;
+  --rw-accent-hover: #e635c0;
+  --rbr__fill-badge: var(--rw-accent);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 432px;
+  margin: 0 auto;
+  padding: 8px 0 20px;
+  color: var(--rw-ink);
+  background: 0 0;
+  font-family: inherit
+}
+
+.nameless-auto-inject[data-nameless-widget]>.rw-widget {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: 0
+}
+
+[data-nameless-widget] .rw-widget *,
+[data-nameless-widget] .rw-widget ::after,
+[data-nameless-widget] .rw-widget ::before {
+  box-sizing: border-box
+}
+
+[data-nameless-widget] .rw-widget button,
+[data-nameless-widget] .rw-widget input,
+[data-nameless-widget] .rw-widget select {
+  font: inherit
+}
+
+[data-nameless-widget] .rw-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important
+}
+
+[data-nameless-widget] .rw-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 16px
+}
+
+[data-nameless-widget] .rw-heading__title {
+  flex: 0 1 auto;
+  min-width: 0;
+  margin: 0;
+  color: var(--rw-ink);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.3
+}
+
+[data-nameless-widget] .rw-heading__title span,
+[data-nameless-widget] .rw-qty__title span,
+[data-nameless-widget] .rw-tier__badge span {
+  color: inherit;
+  font: inherit
+}
+
+[data-nameless-widget] .rw-heading__rule {
+  display: block;
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 24px;
+  background: var(--rw-line)
+}
+
+[data-nameless-widget] .rw-tier-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px
+}
+
+[data-nameless-widget] .rw-tier {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  background: 0 0;
+  border: 1px solid transparent;
+  border-radius: 8px
+}
+
+[data-nameless-widget] .rw-tier.is-selected {
+  border-color: var(--rw-accent)
+}
+
+[data-nameless-widget] .rw-ribbon,
+[data-nameless-widget] .rw-ribbon__label {
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1
+}
+
+[data-nameless-widget] .rw-ribbon {
+  position: absolute;
+  top: 0;
+  right: 14px;
+  left: auto;
+  z-index: 3;
+  height: 22px;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  pointer-events: none
+}
+
+[data-nameless-widget] .rw-ribbon__label {
+  justify-content: center;
+  height: 100%;
+  padding: 0 12px;
+  background: var(--rw-accent);
+  border-radius: 999px;
+  text-transform: none
+}
+
+[data-nameless-widget] .rw-ribbon__arch {
+  display: none !important
+}
+
+[data-nameless-widget] .rw-tier.has-ribbon {
+  margin-top: 10px
+}
+
+[data-nameless-widget] .rw-tier__main {
+  border: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  color: var(--rw-ink);
+  background: 0 0;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left
+}
+
+[data-nameless-widget] .rw-tier__main[aria-pressed=false] {
+  border: 1px solid gray
+}
+
+[data-nameless-widget] .rw-tier__main:disabled {
+  cursor: not-allowed;
+  opacity: .55
+}
+
+[data-nameless-widget] .rw-radio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none
+}
+
+[data-nameless-widget] .rw-radio input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--rw-accent);
+  cursor: pointer;
+  pointer-events: none
+}
+
+[data-nameless-widget] .rw-tier__copy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--rw-ink);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.25
+}
+
+[data-nameless-widget] .rw-tier__copy>span:first-child {
+  color: inherit;
+  font: inherit
+}
+
+[data-nameless-widget] .rw-tier__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 20px;
+  padding: 3px 10px;
+  color: #fff;
+  background: var(--rw-label);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap
+}
+
+[data-nameless-widget] .rw-tier__prices {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  white-space: nowrap
+}
+
+[data-nameless-widget] .rw-tier__price {
+  color: var(--rw-ink);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2
+}
+
+[data-nameless-widget] .rw-tier__compare {
+  color: var(--rw-muted);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-decoration: line-through
+}
+
+[data-nameless-widget] .rw-divider {
+  height: 1px;
+  margin: 0 14px;
+  background: var(--rw-divider)
+}
+
+[data-nameless-widget] .rw-qty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px 14px
+}
+
+[data-nameless-widget] .rw-qty__title {
+  color: var(--rw-ink);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2
+}
+
+[data-nameless-widget] .rw-qty__controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px
+}
+
+[data-nameless-widget] .rw-qty__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: #000;
+  background: var(--rw-field);
+  border: 1px solid var(--rw-field-border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1
+}
+
+[data-nameless-widget] .rw-qty__btn:hover:not(:disabled):not(.is-disabled) {
+  background: #f0f0f0
+}
+
+[data-nameless-widget] .rw-qty__btn.is-disabled,
+[data-nameless-widget] .rw-qty__btn:disabled {
+  cursor: not-allowed;
+  opacity: .45
+}
+
+[data-nameless-widget] .rw-qty__value {
+  min-width: 24px;
+  color: var(--rw-ink);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center
+}
+
+[data-nameless-widget] .rw-variant-bridge {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0 0 0 0);
+  white-space: nowrap
+}
+
+[data-nameless-widget] .rw-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px
+}
+
+[data-nameless-widget] .rw-atc,
+[data-nameless-widget] .rw-buynow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 150ms ease, color 150ms ease, transform 150ms ease
+}
+
+[data-nameless-widget] .rw-atc {
+  color: #fff;
+  background: var(--rw-accent);
+  border: 0
+}
+
+[data-nameless-widget] .rw-atc .money,
+[data-nameless-widget] .rw-atc span {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.2
+}
+
+[data-nameless-widget] .rw-atc:hover:not(:disabled) {
+  background: var(--rw-accent-hover)
+}
+
+[data-nameless-widget] .rw-buynow {
+  color: var(--rw-ink);
+  background: #fff;
+  border: 1.5px solid var(--rw-ink);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2
+}
+
+[data-nameless-widget] .rw-buynow:hover:not(:disabled) {
+  background: #f7f7f7
+}
+
+[data-nameless-widget] .rw-atc:active:not(:disabled),
+[data-nameless-widget] .rw-buynow:active:not(:disabled) {
+  transform: scale(.99)
+}
+
+[data-nameless-widget] .rw-atc:disabled,
+[data-nameless-widget] .rw-buynow:disabled {
+  cursor: not-allowed;
+  opacity: .55
+}
+
+@media (max-width:430px) {
+
+  [data-nameless-widget] .rw-atc .money,
+  [data-nameless-widget] .rw-atc span,
+  [data-nameless-widget] .rw-heading__title {
+    font-size: 16px
+  }
+
+  [data-nameless-widget] .rw-qty__title,
+  [data-nameless-widget] .rw-qty__value,
+  [data-nameless-widget] .rw-tier__copy,
+  [data-nameless-widget] .rw-tier__price {
+    font-size: 15px
+  }
+}

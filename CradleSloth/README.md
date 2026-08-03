@@ -10,6 +10,8 @@
 | Source | Upsell communication |
 | Total Bundles | 3 (each has more than 1 discount logic) |
 | Bundle Status | Active |
+| HubSpot | [CradleSloth - Knit Bundles](https://app.hubspot.com/contacts/48402902/record/0-3/61024739185) |
+| Unmet feature | — |
 
 ## Customer Background
 
