@@ -1,0 +1,527 @@
+[data-nameless-widget] {
+  container-type: inline-size;
+  margin: 0 0 24px;
+  overflow-anchor: none
+}
+
+.nameless-auto-inject[data-nameless-widget] {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  margin-right: auto;
+  margin-left: 0
+}
+
+[data-nameless-widget] .ms-widget {
+  --ms-ink: #191919;
+  --ms-muted: #8d8d8d;
+  --ms-line: #ececec;
+  --ms-accent: #ff41d5;
+  --ms-accent-hover: #e635c0;
+  --rbr__fill-badge: var(--ms-accent);
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 432px;
+  margin: 0 auto;
+  padding: 4px 0 8px;
+  overflow-anchor: none;
+  color: var(--ms-ink);
+  background: 0 0;
+  font-family: inherit
+}
+
+.nameless-auto-inject[data-nameless-widget]>.ms-widget {
+  max-width: 100%;
+  margin-inline: 0
+}
+
+[data-nameless-widget] .ms-widget *,
+[data-nameless-widget] .ms-widget ::after,
+[data-nameless-widget] .ms-widget ::before {
+  box-sizing: border-box
+}
+
+[data-nameless-widget] .ms-widget button,
+[data-nameless-widget] .ms-widget input,
+[data-nameless-widget] .ms-widget select {
+  font: inherit
+}
+
+[data-nameless-widget] .ms-sr,
+[data-nameless-widget] .ms-addon__qty {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  white-space: nowrap !important
+}
+
+[data-nameless-widget] .ms-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 16px
+}
+
+[data-nameless-widget] .ms-heading__title,
+[data-nameless-widget] .ms-addons__title {
+  margin: 0;
+  color: var(--ms-ink);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3
+}
+
+[data-nameless-widget] .ms-heading__rule {
+  display: block;
+  flex: 1 1 auto;
+  height: 1px;
+  min-width: 24px;
+  background: var(--ms-line)
+}
+
+[data-nameless-widget] .ms-tier-list,
+[data-nameless-widget] .ms-addons__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px
+}
+
+[data-nameless-widget] .ms-tier-wrap {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  background: #fff;
+  border: 1px solid #e4e4e4;
+  border-radius: 16px
+}
+
+[data-nameless-widget] .ms-tier-wrap.is-selected {
+  border-color: var(--ms-accent);
+  box-shadow: 0 0 0 1px var(--ms-accent)
+}
+
+[data-nameless-widget] .ms-tier-wrap.has-ribbon {
+  margin-top: 12px
+}
+
+[data-nameless-widget] .ms-ribbon {
+  position: absolute;
+  top: -9px;
+  right: 18px;
+  z-index: 3;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  height: 20px;
+  pointer-events: none;
+  white-space: nowrap
+}
+
+[data-nameless-widget] .ms-ribbon svg {
+  display: block;
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  overflow: hidden
+}
+
+[data-nameless-widget] .ms-ribbon span {
+  display: block;
+  height: 20px;
+  padding: 1px 8px;
+  overflow: hidden;
+  border-radius: 0 0 4px 4px;
+  color: #fff;
+  background: var(--rbr__fill-badge);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px
+}
+
+[data-nameless-widget] .ms-tier {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 76px;
+  padding: 16px 18px;
+  color: var(--ms-ink);
+  background: 0 0;
+  border: 0;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left
+}
+
+[data-nameless-widget] .ms-tier:disabled {
+  cursor: not-allowed;
+  opacity: .55
+}
+
+[data-nameless-widget] .ms-tier__radio {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #cfcfcf;
+  border-radius: 999px;
+  background: #fff
+}
+
+[data-nameless-widget] .ms-tier.is-selected .ms-tier__radio {
+  border-color: var(--ms-accent);
+  background: var(--ms-accent);
+  box-shadow: inset 0 0 0 3px #fff
+}
+
+[data-nameless-widget] .ms-tier__copy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0
+}
+
+[data-nameless-widget] .ms-tier__title {
+  color: var(--ms-ink);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3
+}
+
+[data-nameless-widget] .ms-tier__badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: #fff;
+  background: #191919;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1;
+  white-space: nowrap
+}
+
+[data-nameless-widget] .ms-tier__prices {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  white-space: nowrap
+}
+
+[data-nameless-widget] .ms-tier__price {
+  color: var(--ms-ink);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2
+}
+
+[data-nameless-widget] .ms-tier__compare {
+  color: var(--ms-muted);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-decoration: line-through
+}
+
+[data-nameless-widget] .ms-qty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px 16px;
+  border-top: 1px solid rgba(255, 65, 213, 0.22)
+}
+
+[data-nameless-widget] .ms-qty__label {
+  color: var(--ms-ink);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2
+}
+
+[data-nameless-widget] .ms-qty__controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px
+}
+
+[data-nameless-widget] .ms-qty__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--ms-ink);
+  background: 0 0;
+  border: 0;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1
+}
+
+[data-nameless-widget] .ms-qty__btn.is-disabled,
+[data-nameless-widget] .ms-qty__btn:disabled {
+  cursor: not-allowed;
+  opacity: .35
+}
+
+[data-nameless-widget] .ms-qty__value {
+  min-width: 20px;
+  color: var(--ms-ink);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center
+}
+
+[data-nameless-widget] .ms-addons {
+  margin-top: 28px
+}
+
+[data-nameless-widget] .ms-addon__intro {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 12px
+}
+
+[data-nameless-widget] .ms-addon__intro-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px
+}
+
+[data-nameless-widget] .ms-addons__off {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: 22px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--ms-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  line-height: 1
+}
+
+[data-nameless-widget] .ms-addons__subtitle {
+  margin: 0;
+  color: var(--ms-muted);
+  font-size: 14px;
+  line-height: 1.35
+}
+
+[data-nameless-widget] .ms-addon {
+  position: relative;
+  padding: 14px;
+  border: 1px solid var(--ms-line);
+  border-radius: 16px;
+  background: #fff
+}
+
+[data-nameless-widget] .ms-addon__row {
+  display: grid;
+  grid-template-columns: 18px 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px
+}
+
+[data-nameless-widget] .ms-addon.is-sold-out {
+  opacity: .55
+}
+
+[data-nameless-widget] .ms-addon__select {
+  display: grid;
+  cursor: pointer
+}
+
+[data-nameless-widget] .ms-addon__select::before {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: ""
+}
+
+[data-nameless-widget] .ms-addon__checkbox {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer
+}
+
+[data-nameless-widget] .ms-addon__control {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #c8c8c8;
+  border-radius: 4px;
+  background: #fff
+}
+
+[data-nameless-widget] .ms-addon__checkbox:checked+.ms-addon__control {
+  border-color: var(--ms-ink);
+  background: var(--ms-ink)
+}
+
+[data-nameless-widget] .ms-addon__checkbox:checked+.ms-addon__control::after {
+  display: block;
+  width: 10px;
+  height: 6px;
+  margin: 3px auto 0;
+  border-bottom: 2px solid #fff;
+  border-left: 2px solid #fff;
+  content: "";
+  transform: rotate(-45deg)
+}
+
+[data-nameless-widget] .ms-addon__media {
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border: 1px solid var(--ms-line);
+  border-radius: 10px;
+  background: #f7f7f7
+}
+
+[data-nameless-widget] .ms-addon__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain
+}
+
+[data-nameless-widget] .ms-addon__placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #f3f3f3
+}
+
+[data-nameless-widget] .ms-addon__content {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  min-width: 0;
+  gap: 6px
+}
+
+[data-nameless-widget] .ms-addon__title {
+  margin: 0;
+  color: var(--ms-ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35
+}
+
+[data-nameless-widget] .ms-addon__link {
+  position: relative;
+  z-index: 2;
+  margin-left: 4px;
+  color: inherit;
+  vertical-align: -2px
+}
+
+[data-nameless-widget] .ms-addon__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: auto
+}
+
+[data-nameless-widget] .ms-addon__now {
+  color: var(--ms-ink);
+  font-size: 14px;
+  font-weight: 500
+}
+
+[data-nameless-widget] .ms-addon__was {
+  color: var(--ms-muted);
+  font-size: 14px
+}
+
+[data-nameless-widget] .ms-addon__variant-label {
+  position: relative;
+  z-index: 2;
+  display: none;
+  width: 100%;
+  margin-top: 10px
+}
+
+[data-nameless-widget] .ms-addon.is-selected .ms-addon__variant-label {
+  display: block
+}
+
+[data-nameless-widget] .ms-addon__variant {
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 28px 6px 9px;
+  border: 1px solid var(--ms-line);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px
+}
+
+[data-nameless-widget] .ms-atc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 16px;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--ms-accent);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2
+}
+
+[data-nameless-widget] .ms-atc:hover:not(:disabled) {
+  background: var(--ms-accent-hover)
+}
+
+[data-nameless-widget] .ms-atc:disabled {
+  cursor: not-allowed;
+  opacity: .55
+}
+
+@media (max-width:430px) {
+  [data-nameless-widget] .ms-heading__title,
+  [data-nameless-widget] .ms-addons__title,
+  [data-nameless-widget] .ms-atc {
+    font-size: 15px
+  }
+
+  [data-nameless-widget] .ms-tier {
+    min-height: 68px;
+    padding: 14px
+  }
+
+  [data-nameless-widget] .ms-tier__title,
+  [data-nameless-widget] .ms-tier__price {
+    font-size: 14px
+  }
+}

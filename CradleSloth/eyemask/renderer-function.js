@@ -2,7 +2,8 @@ window.nameless.defineRenderer(function(t) {
   var n = t.snapshot,
     e = t.container,
     r = n.selectors || [],
-    a = n.conditionSets || [];
+    a = n.conditionSets || [],
+    SET_PRICES = {};
 
   function i(t) {
     return String(null == t ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
@@ -95,6 +96,65 @@ window.nameless.defineRenderer(function(t) {
       mode: a
     }
   }
+
+  function k(t) {
+    if (!t) return !1;
+    var n = String(t.type || ""),
+      e = t.raw || {},
+      r = e.spec && "object" == typeof e.spec ? e.spec : {},
+      a = String(t.rawType || r.type || e.type || "");
+    return "setPrice" === n || "set_price" === n || /set[_-]?price/i.test(a)
+  }
+
+  function w(t) {
+    if (!t) return {
+      amount: 0,
+      mode: "TOTAL"
+    };
+    var n = t.raw || {},
+      e = n.spec && "object" == typeof n.spec ? n.spec : {},
+      r = t.amount;
+    null == r && (r = e.amount), null == r && (r = e.price), null == r && (r = t.price);
+    var a = t.mode || e.mode || n.mode || "TOTAL";
+    return "PER_SELECTOR" === a || "SET" === a ? a = "TOTAL" : "SET_PER_UNIT" === a && (a = "PER_UNIT"), {
+      amount: Number(r) || 0,
+      mode: String(a)
+    }
+  }
+
+  function T(t, e) {
+    for (var r = m(t), a = {
+        amount: 0,
+        mode: "TOTAL"
+      }, i = 0; i < r.length; i++) {
+      var u = r[i];
+      if (u && k(u) && f(u, e)) {
+        var o = w(u);
+        o.amount > 0 && (a = o)
+      }
+    }
+    return a
+  }
+
+  function P(t, e) {
+    if (e && Number(e.amount) > 0) return e;
+    var r = n.meta || {},
+      a = r.setPrices || r.setPriceByQty || SET_PRICES || {},
+      i = a[t];
+    null == i && (i = a[String(t)]);
+    if (null == i) return {
+      amount: 0,
+      mode: "TOTAL"
+    };
+    if ("number" == typeof i) return {
+      amount: i,
+      mode: r.setPriceMode || "TOTAL"
+    };
+    return {
+      amount: Number(i.amount) || 0,
+      mode: i.mode || r.setPriceMode || "TOTAL"
+    }
+  }
   var g = function() {
       var t, n = (e.closest("[data-nameless-block]") || e).getAttribute("data-product-id") || "",
         a = n ? 0 === n.indexOf("gid://") ? n : "gid://shopify/Product/" + n : "",
@@ -126,7 +186,8 @@ window.nameless.defineRenderer(function(t) {
         null === i || i <= 0 || e[i] || (e[i] = {
           quantity: i,
           percentage: b(r, t.id),
-          fixed: v(r, t.id)
+          fixed: v(r, t.id),
+          setPrice: T(r, t.id)
         })
       }
       return Object.keys(e).map(function(t) {
@@ -146,19 +207,26 @@ window.nameless.defineRenderer(function(t) {
       return !1
     }();
   e.innerHTML = '<div class="bs-widget">' + (g && h && x.length ? '<div class="bs-heading"><span class="bs-heading__rule"></span><span class="bs-heading__text">Bundle &amp; Save</span><span class="bs-heading__rule"></span></div><div class="bs-tier-list">' + x.map(function(t) {
-      var n = function(t, n, e, r) {
-          var a = Math.max(1, Number(t) || 1),
-            i = Number(n) || 0,
-            u = Number(e) || 0,
-            o = r && Number(r.amount) > 0 ? Number(r.amount) : 0,
-            l = r && r.mode ? String(r.mode) : "TOTAL",
-            c = i * (1 - u / 100) * a,
-            d = 0;
-          return o > 0 && (d = "PER_UNIT" === l ? Math.min(o * a, c) : Math.min(o, c)), {
-            base: s(i),
-            final: s(Math.max(0, c - d) / a)
+      var n = function(t, e, r, a, i) {
+          var u = Math.max(1, Number(t) || 1),
+            o = Number(e) || 0,
+            l = Number(r) || 0,
+            c = a && Number(a.amount) > 0 ? Number(a.amount) : 0,
+            d = a && a.mode ? String(a.mode) : "TOTAL";
+          i = P(t, i);
+          var m = i && Number(i.amount) > 0 ? Number(i.amount) : 0,
+            f = i && i.mode ? String(i.mode) : "TOTAL";
+          if (m > 0) return {
+            base: s(o),
+            final: s(Math.max(0, "PER_UNIT" === f ? m : m / u))
+          };
+          var p = o * (1 - l / 100) * u,
+            y = 0;
+          return c > 0 && (y = "PER_UNIT" === d ? Math.min(c * u, p) : Math.min(c, p)), {
+            base: s(o),
+            final: s(Math.max(0, p - y) / u)
           }
-        }(t.quantity, S, t.percentage, t.fixed),
+        }(t.quantity, S, t.percentage, t.fixed, t.setPrice),
         e = !(!q || q.quantity !== t.quantity),
         r = ! function(t, n, e) {
           var r = d(t, n);

@@ -1,0 +1,63 @@
+{
+  "id": "bundle-collection-page-gift",
+  "name": "Collection 25% + free gift",
+  "title": "25% off + free gift",
+  "status": "draft",
+  "atcOverride": false,
+  "selectors": [
+    {
+      "id": "assistant-selector-1",
+      "title": "Eligible products",
+      "itemType": "collection",
+      "kind": "collectionSingle",
+      "itemId": null,
+      "pdpShow": true,
+      "minQuantity": 1,
+      "maxQuantity": null
+    },
+    {
+      "id": "assistant-selector-2",
+      "title": "Free gift",
+      "itemType": "collection",
+      "kind": "collectionMulti",
+      "itemId": null,
+      "pdpShow": true,
+      "minQuantity": 1,
+      "maxQuantity": 1
+    }
+  ],
+  "conditionRewardSets": [
+    {
+      "id": "assistant-crs-1",
+      "conditions": [
+        {
+          "type": "quantity",
+          "comparisonType": "min",
+          "value": 1,
+          "maxValue": null,
+          "selectorIds": ["assistant-selector-1"]
+        },
+        {
+          "type": "quantity",
+          "comparisonType": "exact",
+          "value": 1,
+          "maxValue": null,
+          "selectorIds": ["assistant-selector-2"]
+        }
+      ],
+      "rewards": [
+        {
+          "type": "percentage_discount",
+          "percentage": 25,
+          "selectorIds": ["assistant-selector-1"]
+        },
+        {
+          "type": "percentage_discount",
+          "percentage": 100,
+          "selectorIds": ["assistant-selector-2"]
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 1
+}

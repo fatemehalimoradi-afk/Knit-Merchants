@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Collection page + free gift preview</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #efeae3;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+      .page {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .page h1 {
+        margin: 0 0 8px;
+        font-size: 22px;
+      }
+      .page p {
+        margin: 0 0 20px;
+        color: #5c564e;
+      }
+    </style>
+    <link rel="stylesheet" href="./styling.css">
+  </head>
+  <body>
+    <div class="page">
+      <h1>Specialist Half-Day Backpack 25L</h1>
+      <p>Preview of the collection-page offer: 25% off this product + one free pouch.</p>
+      <div id="widget" data-nameless-widget="bundle-collection-page-gift" data-nameless-block data-product-id="gid://shopify/Product/1001"></div>
+    </div>
+    <script>
+      var hostId = "assistant-selector-1";
+      var giftId = "assistant-selector-2";
+      var backpack = {
+        id: "gid://shopify/Product/1001",
+        handle: "specialist-half-day-backpack-25l",
+        title: "Specialist Half-Day Backpack 25L",
+        variants: [
+          {
+            id: "gid://shopify/ProductVariant/2001",
+            title: "Olive",
+            priceAmount: 160,
+            currencyCode: "USD",
+            available: true,
+            image: {
+              url: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400&q=80",
+              altText: "Olive backpack",
+              width: 400,
+              height: 400
+            },
+            inventoryQuantity: 12
+          },
+          {
+            id: "gid://shopify/ProductVariant/2002",
+            title: "Black",
+            priceAmount: 160,
+            currencyCode: "USD",
+            available: true,
+            image: {
+              url: "https://images.unsplash.com/photo-1622560480654-d96214fdc887?auto=format&fit=crop&w=400&q=80",
+              altText: "Black backpack",
+              width: 400,
+              height: 400
+            },
+            inventoryQuantity: 8
+          }
+        ]
+      };
+      var pouches = [
+        ["Tech pouch", 28, "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80"],
+        ["Travel pouch", 22, "https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&w=400&q=80"],
+        ["Cable pouch", 18, "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400&q=80"],
+        ["Everyday pouch", 24, "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=400&q=80"]
+      ].map(function (row, index) {
+        return {
+          id: "gid://shopify/Product/30" + (index + 1),
+          handle: row[0].toLowerCase().replace(/\s+/g, "-"),
+          title: row[0],
+          variants: [
+            {
+              id: "gid://shopify/ProductVariant/40" + (index + 1),
+              title: "Default Title",
+              priceAmount: row[1],
+              currencyCode: "USD",
+              available: true,
+              image: { url: row[2], altText: row[0], width: 400, height: 400 },
+              inventoryQuantity: 20
+            }
+          ]
+        };
+      });
+
+      var state = {
+        hostQty: 1,
+        hostVariantId: backpack.variants[0].id,
+        gifts: {}
+      };
+
+      function productById(id) {
+        if (backpack.id === id) return backpack;
+        var i;
+        for (i = 0; i < pouches.length; i++) if (pouches[i].id === id) return pouches[i];
+        return null;
+      }
+
+      function variantById(product, variantId) {
+        var variants = product.variants || [];
+        var i;
+        for (i = 0; i < variants.length; i++) if (variants[i].id === variantId) return variants[i];
+        return variants[0] || null;
+      }
+
+      function entry(productId, variantId, quantity, discountPct) {
+        var product = productById(productId);
+        var variant = variantById(product, variantId);
+        var base = variant ? variant.priceAmount : 0;
+        var final = Math.round(base * (1 - discountPct / 100) * 100) / 100;
+        return {
+          productId: productId,
+          variantId: variant.id,
+          quantity: quantity,
+          soldOut: !variant.available,
+          basePrice: base,
+          finalPrice: final,
+          cumulativePercentageDiscount: discountPct,
+          appliedRewards: discountPct ? [{ id: "reward-" + discountPct }] : []
+        };
+      }
+
+      function snapshot() {
+        var giftEntries = [];
+        var giftCount = 0;
+        Object.keys(state.gifts).forEach(function (productId) {
+          var pick = state.gifts[productId];
+          if (!pick || !pick.quantity) return;
+          giftCount += pick.quantity;
+          giftEntries.push({ productId: productId, variantId: pick.variantId, quantity: pick.quantity });
+        });
+        var unlocked = state.hostQty >= 1 && giftCount === 1;
+        var hostDiscount = unlocked ? 25 : 0;
+        var giftDiscount = unlocked ? 100 : 0;
+        var hostEntry = entry(backpack.id, state.hostVariantId, state.hostQty, hostDiscount);
+        var giftSel = giftEntries.map(function (item) {
+          return entry(item.productId, item.variantId, item.quantity, giftDiscount);
+        });
+        var itemCount = state.hostQty + giftCount;
+        var baseSubtotal = hostEntry.basePrice * hostEntry.quantity;
+        var subtotal = hostEntry.finalPrice * hostEntry.quantity;
+        giftSel.forEach(function (item) {
+          baseSubtotal += item.basePrice * item.quantity;
+          subtotal += item.finalPrice * item.quantity;
+        });
+        return {
+          bundleId: "gid://shopify/Metaobject/bundle-collection-page-gift",
+          meta: {
+            title: "25% off + free gift",
+            subtitle: "Buy this backpack and choose any pouch free.",
+            atcOverride: false
+          },
+          selectors: [
+            { kind: "productSingle", id: hostId, product: backpack },
+            {
+              kind: "collectionMulti",
+              id: giftId,
+              collection: {
+                id: "gid://shopify/Collection/9001",
+                handle: "pouches",
+                title: "Pouches",
+                products: pouches
+              }
+            }
+          ],
+          conditionSets: [
+            {
+              id: "assistant-crs-1",
+              conditions: [
+                {
+                  id: "c1",
+                  metaobjectType: "quantity",
+                  satisfiesFor: [{ selectorId: hostId }],
+                  type: "quantity",
+                  minimum: 1
+                },
+                {
+                  id: "c2",
+                  metaobjectType: "quantity",
+                  satisfiesFor: [{ selectorId: giftId }],
+                  type: "quantity",
+                  minimum: 1,
+                  maximum: 1
+                }
+              ],
+              rewardSet: {
+                id: "r1",
+                rewards: [
+                  {
+                    id: "rw-host",
+                    appliesTo: [{ selectorId: hostId }],
+                    type: "percentageDiscount",
+                    percentage: 25,
+                    quantity: null
+                  },
+                  {
+                    id: "rw-gift",
+                    appliesTo: [{ selectorId: giftId }],
+                    type: "percentageDiscount",
+                    percentage: 100,
+                    quantity: null
+                  }
+                ]
+              }
+            }
+          ],
+          status: "ready",
+          selections: {
+            [hostId]: hostEntry,
+            [giftId]: giftSel
+          },
+          totals: {
+            itemCount: itemCount,
+            baseSubtotal: baseSubtotal,
+            subtotal: subtotal,
+            currencyCode: "USD"
+          }
+        };
+      }
+
+      var paint = null;
+      window.nameless = {
+        defineRenderer: function (fn) {
+          paint = fn;
+        }
+      };
+
+      function t(source, vars) {
+        var out = String(source);
+        if (vars) {
+          Object.keys(vars).forEach(function (key) {
+            out = out.replace(new RegExp("{{" + key + "}}", "g"), String(vars[key]));
+          });
+        }
+        return out
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function render() {
+        paint({
+          snapshot: snapshot(),
+          container: document.getElementById("widget"),
+          locale: "en",
+          t: t
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var script = document.createElement("script");
+        script.src = "./renderer-function.js";
+        script.onload = function () {
+          render();
+          var root = document.getElementById("widget");
+          root.addEventListener("change", function (event) {
+            var target = event.target;
+            var selectorId = target.getAttribute("data-nameless-qty-selector") || target.getAttribute("data-nameless-variant-selector");
+            var productId = target.getAttribute("data-nameless-product-id");
+            if (target.matches("[data-nameless-qty-selector]") && target.tagName === "INPUT") {
+              if (selectorId === hostId) state.hostQty = Math.max(1, Number(target.value) || 1);
+            }
+            if (target.matches("[data-nameless-variant-selector]")) {
+              if (selectorId === hostId) state.hostVariantId = target.value;
+              if (selectorId === giftId && productId) {
+                state.gifts[productId] = state.gifts[productId] || { quantity: 0, variantId: target.value };
+                state.gifts[productId].variantId = target.value;
+              }
+            }
+            render();
+          });
+          root.addEventListener("click", function (event) {
+            var button = event.target.closest("[data-nameless-qty-selector]");
+            if (!button || button.tagName !== "BUTTON") return;
+            var productId = button.getAttribute("data-nameless-product-id");
+            if (!productId) return;
+            var current = state.gifts[productId] && state.gifts[productId].quantity === 1;
+            if (current) {
+              state.gifts[productId].quantity = 0;
+            } else {
+              state.gifts[productId] = {
+                quantity: 1,
+                variantId:
+                  (state.gifts[productId] && state.gifts[productId].variantId) ||
+                  productById(productId).variants[0].id
+              };
+            }
+            render();
+          });
+        };
+        document.body.appendChild(script);
+      });
+    </script>
+  </body>
+</html>

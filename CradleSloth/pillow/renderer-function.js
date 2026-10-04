@@ -2,7 +2,42 @@ window.nameless.defineRenderer(function(t) {
   var e = t.snapshot,
     n = t.container,
     r = e.selectors || [],
-    a = e.conditionSets || [];
+    a = rowsFrom(e),
+    SET_PRICES = {};
+
+  function clauseConditions(clauses) {
+    var out = [],
+      list = Array.isArray(clauses) ? clauses : [],
+      i, conds, j;
+    for (i = 0; i < list.length; i++) {
+      conds = list[i] && Array.isArray(list[i].conditions) ? list[i].conditions : [];
+      for (j = 0; j < conds.length; j++) conds[j] && out.push(conds[j])
+    }
+    return out
+  }
+
+  function rowsFrom(snapshot) {
+    var offers = snapshot && Array.isArray(snapshot.offers) ? snapshot.offers : [],
+      rows = [],
+      i, offer, shared, tiers, t, tier;
+    for (i = 0; i < offers.length; i++) {
+      offer = offers[i];
+      if (!offer) continue;
+      shared = clauseConditions(offer.conditionClauses);
+      tiers = Array.isArray(offer.tiers) ? offer.tiers : [];
+      for (t = 0; t < tiers.length; t++) {
+        tier = tiers[t];
+        if (!tier) continue;
+        rows.push({
+          id: tier.id,
+          conditions: shared.concat(clauseConditions(tier.conditionClauses)),
+          rewards: Array.isArray(tier.rewards) ? tier.rewards : []
+        })
+      }
+    }
+    if (rows.length) return rows;
+    return snapshot && Array.isArray(snapshot.conditionSets) ? snapshot.conditionSets : []
+  }
 
   function i(t) {
     return String(null == t ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
@@ -90,8 +125,8 @@ window.nameless.defineRenderer(function(t) {
   }
 
   function v(t) {
-    var e = u(t && t.minimum),
-      n = u(t && t.maximum);
+    var e = u(t && (null != t.min ? t.min : t.minimum)),
+      n = u(t && (null != t.max ? t.max : t.maximum));
     return {
       minimum: null === e ? 0 : e,
       maximum: null === n ? 1 / 0 : n
@@ -111,7 +146,9 @@ window.nameless.defineRenderer(function(t) {
   }
 
   function q(t) {
-    return t && t.rewardSet && Array.isArray(t.rewardSet.rewards) ? t.rewardSet.rewards : []
+    if (!t) return [];
+    if (Array.isArray(t.rewards)) return t.rewards;
+    return t.rewardSet && Array.isArray(t.rewardSet.rewards) ? t.rewardSet.rewards : []
   }
 
   function k(t, e) {
@@ -139,13 +176,64 @@ window.nameless.defineRenderer(function(t) {
     }
   }
 
+  function z(t) {
+    if (!t) return !1;
+    var e = String(t.type || ""),
+      n = t.raw || {},
+      r = n.spec && "object" == typeof n.spec ? n.spec : {},
+      a = String(t.rawType || r.type || n.type || "");
+    return "setPrice" === e || "set_price" === e || /set[_-]?price/i.test(a)
+  }
+
+  function J(t) {
+    if (!t) return {
+      amount: 0,
+      mode: "TOTAL"
+    };
+    var e = t.raw || {},
+      n = e.spec && "object" == typeof e.spec ? e.spec : {},
+      r = t.amount;
+    null == r && (r = n.amount), null == r && (r = n.price), null == r && (r = t.price);
+    var a = t.mode || n.mode || e.mode || "TOTAL";
+    return "PER_SELECTOR" === a || "SET" === a ? a = "TOTAL" : "SET_PER_UNIT" === a && (a = "PER_UNIT"), {
+      amount: Number(r) || 0,
+      mode: String(a)
+    }
+  }
+
+  function G(t, e) {
+    for (var n = q(t), r = {
+        amount: 0,
+        mode: "TOTAL"
+      }, a = 0; a < n.length; a++) {
+      var i = n[a];
+      if (i && z(i) && k(i, e)) {
+        var u = J(i);
+        u.amount > 0 && (r = u)
+      }
+    }
+    return r
+  }
+
   function S(t, e) {
-    var n = A(t, e);
-    return x(t, e) + "|" + n.amount + "|" + n.mode
+    var n = A(t, e),
+      r = G(t, e);
+    return x(t, e) + "|" + n.amount + "|" + n.mode + "|" + r.amount + "|" + r.mode
   }
 
   function M(t) {
     return t >= 99.999
+  }
+
+  function W(t, e) {
+    for (var n = q(t), r = 0; r < n.length; r++) {
+      var a = n[r],
+        i = a && Array.isArray(a.appliesTo) ? a.appliesTo : [];
+      if (a && "percentageDiscount" === a.type && M(Number(a.percentage) || 0) && i.length && !i.some(function(t) {
+          return t && t.selectorId === e
+        })) return !0
+    }
+    return !1
   }
 
   function N(t, e) {
@@ -168,17 +256,44 @@ window.nameless.defineRenderer(function(t) {
     })
   }
 
-  function T(t, e, n, r) {
+  function K(t, n) {
+    if (n && Number(n.amount) > 0) return n;
+    var r = e.meta || {},
+      a = r.setPrices || r.setPriceByQty || SET_PRICES || {},
+      i = a[t];
+    null == i && (i = a[String(t)]);
+    if (null == i) return {
+      amount: 0,
+      mode: "TOTAL"
+    };
+    if ("number" == typeof i) return {
+      amount: i,
+      mode: r.setPriceMode || "TOTAL"
+    };
+    return {
+      amount: Number(i.amount) || 0,
+      mode: i.mode || r.setPriceMode || "TOTAL"
+    }
+  }
+
+  function T(t, e, n, r, p) {
     var a = Math.max(1, Number(t) || 1),
       i = Number(e) || 0,
       u = Number(n) || 0,
       o = r && Number(r.amount) > 0 ? Number(r.amount) : 0,
-      l = r && r.mode ? String(r.mode) : "TOTAL",
-      c = i * (1 - u / 100) * a,
-      m = 0;
-    return o > 0 && (m = "PER_UNIT" === l ? Math.min(o * a, c) : Math.min(o, c)), {
+      l = r && r.mode ? String(r.mode) : "TOTAL";
+    p = K(t, p);
+    var c = p && Number(p.amount) > 0 ? Number(p.amount) : 0,
+      m = p && p.mode ? String(p.mode) : "TOTAL";
+    if (c > 0) return {
       base: s(i),
-      final: s(Math.max(0, c - m) / a)
+      final: s(Math.max(0, "PER_UNIT" === m ? c : c / a))
+    };
+    var d = i * (1 - u / 100) * a,
+      y = 0;
+    return o > 0 && (y = "PER_UNIT" === l ? Math.min(o * a, d) : Math.min(o, d)), {
+      base: s(i),
+      final: s(Math.max(0, d - y) / a)
     }
   }
 
@@ -196,7 +311,7 @@ window.nameless.defineRenderer(function(t) {
   var Q, P, C, L, I, E, B, D = (Q = r.filter(function(t) {
       return !!l(t)
     }).map(function(t) {
-      for (var e = [], n = [], r = [], i = [], u = 0, s = 0; s < a.length; s++) {
+      for (var e = [], n = [], r = [], i = [], u = 0, p = 0, s = 0; s < a.length; s++) {
         var o = g(a[s], t.id);
         if (o) {
           e.push(o);
@@ -206,8 +321,9 @@ window.nameless.defineRenderer(function(t) {
           r.push(c.minimum + ":" + (Number.isFinite(c.maximum) ? c.maximum : "*"))
         }
         var m = x(a[s], t.id),
-          d = A(a[s], t.id);
-        (m > 0 || d.amount > 0) && i.push(S(a[s], t.id)), M(m) && u++
+          d = A(a[s], t.id),
+          y = G(a[s], t.id);
+        (m > 0 || d.amount > 0 || y.amount > 0) && i.push(S(a[s], t.id)), M(m) && u++, o && W(a[s], t.id) && p++
       }
       return {
         selector: t,
@@ -218,6 +334,7 @@ window.nameless.defineRenderer(function(t) {
         }),
         discounts: O(i),
         fullRewardCount: u,
+        earnsGift: p,
         allConditionsExact: e.length > 0 && e.every(function(t) {
           return null !== h(t)
         })
@@ -230,7 +347,7 @@ window.nameless.defineRenderer(function(t) {
       return !P || t.selector.id !== P.selector.id
     }).sort(function(t, e) {
       function n(t) {
-        return (t.records.length === a.length ? 100 : 0) + (t.allConditionsExact ? 50 : 0) + 10 * t.exactQuantities.length
+        return (t.records.length === a.length ? 100 : 0) + (t.allConditionsExact ? 50 : 0) + 10 * t.exactQuantities.length + 20 * t.earnsGift
       }
       return n(e) - n(t)
     })[0] || null, L = Q.filter(function(t) {
@@ -259,14 +376,19 @@ window.nameless.defineRenderer(function(t) {
             percentages: [],
             fixedAmounts: [],
             fixedModes: [],
+            setAmounts: [],
+            setModes: [],
             giftQuantities: []
           }), n[s].percentages.push(x(i, t.id)), function() {
             var e = A(i, t.id);
             n[s].fixedAmounts.push(e.amount), n[s].fixedModes.push(e.mode)
+          }(), function() {
+            var e = G(i, t.id);
+            n[s].setAmounts.push(e.amount), n[s].setModes.push(e.mode)
           }(), e && M(x(i, e.id)))) {
           var o = h(g(i, e.id));
           if (null === o)
-            for (var l = i.rewardSet && i.rewardSet.rewards ? i.rewardSet.rewards : [], c = 0; c < l.length; c++) {
+            for (var l = q(i), c = 0; c < l.length; c++) {
               var m = l[c];
               if (m && Array.isArray(m.appliesTo) && m.appliesTo.some(function(t) {
                   return t && t.selectorId === e.id
@@ -289,6 +411,10 @@ window.nameless.defineRenderer(function(t) {
             amount: Number(r) || 0,
             mode: a || "TOTAL"
           },
+          setPrice: {
+            amount: Number(N(e.setAmounts, 0)) || 0,
+            mode: N(e.setModes, "TOTAL") || "TOTAL"
+          },
           giftQuantity: N(e.giftQuantities, 0)
         }
       }).sort(function(t, e) {
@@ -305,17 +431,23 @@ window.nameless.defineRenderer(function(t) {
         }
       }
       for (var u = [], s = 1; s <= e; s++) {
-        for (var o = [], l = [], c = [], m = 0; m < a.length; m++)
-          if (_(g(a[m], t.id), s)) {
-            o.push(x(a[m], t.id));
-            var d = A(a[m], t.id);
-            l.push(d.amount), c.push(d.mode)
+        for (var o = [], l = [], c = [], m = [], d = [], y = 0; y < a.length; y++)
+          if (_(g(a[y], t.id), s)) {
+            o.push(x(a[y], t.id));
+            var p = A(a[y], t.id);
+            l.push(p.amount), c.push(p.mode);
+            var f = G(a[y], t.id);
+            m.push(f.amount), d.push(f.mode)
           } o.length && u.push({
           quantity: s,
           percentage: N(o, 0),
           fixed: {
             amount: Number(N(l, 0)) || 0,
             mode: N(c, "TOTAL") || "TOTAL"
+          },
+          setPrice: {
+            amount: Number(N(m, 0)) || 0,
+            mode: N(d, "TOTAL") || "TOTAL"
           }
         })
       }
@@ -330,7 +462,7 @@ window.nameless.defineRenderer(function(t) {
       u = c(r, e),
       s = c(a, n),
       p = u ? u.currencyCode : m(),
-      f = T(t.quantity, u && Number(u.priceAmount) || 0, t.percentage, t.fixed),
+      f = T(t.quantity, u && Number(u.priceAmount) || 0, t.percentage, t.fixed, t.setPrice),
       b = !(!e || e.quantity !== t.quantity || D.gift && (n ? n.quantity : 0) !== t.giftQuantity),
       g = !y(r, e, t.quantity) || t.giftQuantity > 0 && !y(a, n, t.giftQuantity),
       v = s ? (Number(s.priceAmount) || 0) * t.giftQuantity : 0;
@@ -357,7 +489,7 @@ window.nameless.defineRenderer(function(t) {
       r = c(n, e),
       a = r ? r.currencyCode : m(),
       u = r && Number(r.priceAmount) || 0,
-      s = T(t.quantity, u, t.percentage, t.fixed),
+      s = T(t.quantity, u, t.percentage, t.fixed, t.setPrice),
       f = !!e && e.quantity === t.quantity,
       b = !y(n, e, t.quantity);
     return '<button class="kb-addon-card' + (f ? " is-selected" : "") + '" type="button" data-nameless-qty-selector="' + i(D.volume.id) + '" value="' + t.quantity + '" aria-pressed="' + (f ? "true" : "false") + '"' + (b ? " disabled" : "") + '><span class="kb-addon-card__top"><span class="kb-radio" aria-hidden="true"></span>' + p(n, r, "kb-addon-card__image") + '</span><span class="kb-addon-card__qty">' + t.quantity + 'x</span><strong class="kb-addon-card__price">' + d(s.final, a) + '/ea</strong><s class="kb-addon-card__compare">' + d(s.base, a) + "</s>" + (2 === t.quantity || 4 === t.quantity ? '<span class="kb-addon-badge">' + i(2 === t.quantity ? "Most Popular" : "Most Savings") + "</span>" : "") + "</button>"
@@ -393,28 +525,38 @@ window.nameless.defineRenderer(function(t) {
         q = Math.min(b, h),
         k = F(t),
         S = Math.max(1, Math.min(q || 1, y ? Math.floor(e.quantity) : k || 1)),
-        M = function(t, e) {
+        M =         function(t, e) {
           if (!t) return {
             percentage: 0,
             fixed: {
               amount: 0,
               mode: "TOTAL"
+            },
+            setPrice: {
+              amount: 0,
+              mode: "TOTAL"
             }
           };
-          for (var n = [], r = [], i = [], u = 0; u < a.length; u++)
-            if (_(g(a[u], t.id), e)) {
-              n.push(x(a[u], t.id));
-              var s = A(a[u], t.id);
-              r.push(s.amount), i.push(s.mode)
+          for (var n = [], r = [], i = [], u = [], o = [], l = 0; l < a.length; l++)
+            if (_(g(a[l], t.id), e)) {
+              n.push(x(a[l], t.id));
+              var c = A(a[l], t.id);
+              r.push(c.amount), i.push(c.mode);
+              var m = G(a[l], t.id);
+              u.push(m.amount), o.push(m.mode)
             } return {
             percentage: N(n, 0),
             fixed: {
               amount: Number(N(r, 0)) || 0,
               mode: N(i, "TOTAL") || "TOTAL"
+            },
+            setPrice: {
+              amount: Number(N(u, 0)) || 0,
+              mode: N(o, "TOTAL") || "TOTAL"
             }
           }
         }(t, S),
-        O = T(S, s, M.percentage, M.fixed),
+        O = T(S, s, M.percentage, M.fixed, M.setPrice),
         w = !r || !r.available || q < 1;
       return '<div class="kb-complete' + (y ? " is-selected" : "") + (n && n.variants && n.variants.length > 1 ? " has-variant" : "") + '"><label class="kb-complete__toggle"><input class="kb-complete__checkbox" type="checkbox" data-nameless-qty-selector="' + i(t.id) + '"' + (y ? " checked" : "") + (w ? " disabled" : "") + '><span class="kb-check" aria-hidden="true"></span>' + p(n, r, "kb-complete__image") + '<span class="kb-complete__copy"><span class="kb-complete__title"><span class="kb-complete__title-line">' + i("COVE Sleep") + '</span><span class="kb-complete__title-line">' + i("EyeMask") + '</span></span><span class="kb-complete__badge">Lowest Price</span></span></label>' + f(t, n, e, !0) + '<div class="kb-complete__qty" aria-label="Quantity"><input class="kb-complete__qty-input" type="number" min="1" max="' + q + '" step="1" value="' + S + '" tabindex="-1" aria-hidden="true" data-nameless-qty-selector="' + i(t.id) + '"><button class="kb-complete__qty-button" type="button" aria-label="Decrease quantity" data-nameless-qty-selector="' + i(t.id) + '" value="' + Math.max(1, S - 1) + '"' + (!y || w || S <= 1 ? " disabled" : "") + '>&minus;</button><span class="kb-complete__qty-value">' + S + '</span><button class="kb-complete__qty-button" type="button" aria-label="Increase quantity" data-nameless-qty-selector="' + i(t.id) + '" value="' + Math.min(q || 1, S + 1) + '"' + (!y || w || S >= q ? " disabled" : "") + '>+</button></div><span class="kb-complete__prices"><strong>' + d(O.final, u) + "/ea</strong><s>" + d(O.base, u) + "</s></span></div>"
     }).join("") : "") + '<button class="kb-atc" type="button" data-nameless-atc="' + i(e.bundleId) + '"' + (function() {
